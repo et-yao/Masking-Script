@@ -30,11 +30,11 @@ for i in range(2, int(sys.argv[2])):
     cnts, hierarchy = cv2.findContours(thresh.copy(), cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     output = image.copy()
     bigContours = [] 
-    for i in range(len(cnts)):
-        area = cv2.contourArea(cnts[i])
+    for j in range(len(cnts)):
+        area = cv2.contourArea(cnts[j])
         if area > 1000:
-            cv2.drawContours(output, [cnts[i]], -1, (240, 0, 159), 3)
-            bigContours.append(cnts[i])
+            cv2.drawContours(output, [cnts[j]], -1, (240, 0, 159), 3)
+            bigContours.append(cnts[j])
     maskContours = np.zeros(image.shape[:2],np.uint8)
     for c in bigContours:
         cv2.drawContours(maskContours, [c], 0, (255, 255, 255), -1)
@@ -50,12 +50,12 @@ for i in range(2, int(sys.argv[2])):
     output = dst.copy()
     bigContours = [] 
     relevantHierarchy = [] #big contour hierarchy stuff
-    for i in range(len(cnts)):
-        area = cv2.contourArea(cnts[i])
+    for j in range(len(cnts)):
+        area = cv2.contourArea(cnts[j])
         if area > 1000:
-            cv2.drawContours(output, [cnts[i]], -1, (240, 0, 159), 3)
-            bigContours.append((cnts[i], i))
-            relevantHierarchy.append(hierarchy2[0][i])
+            cv2.drawContours(output, [cnts[j]], -1, (240, 0, 159), 3)
+            bigContours.append((cnts[j], j))
+            relevantHierarchy.append(hierarchy2[0][j])
     maskContours = np.zeros(image.shape[:2],np.uint8)
     
     
@@ -79,4 +79,5 @@ for i in range(2, int(sys.argv[2])):
     #k = cv2.waitKey(5) & 0xFF
     #if k == ord('q'):
     #   break
-    cv2.imwrite(sys.argv[1] + "_%003d_mask.tif" %i, dst)
+    str = "_%003d_mask.tif" %i;
+    cv2.imwrite(sys.argv[1] + str, dst)
