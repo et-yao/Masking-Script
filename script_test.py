@@ -10,7 +10,7 @@ import sys
 for i in range(2, int(sys.argv[2])):
     
     
-    image = cv2.imread(sys.argv[1] + "_%003d.tif" %i)
+    image = cv2.imread(sys.argv[1] + "_%003d_crop.tif" %i)
     
     imageHSV = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     #Read in the arrays
@@ -21,6 +21,10 @@ for i in range(2, int(sys.argv[2])):
     res = cv2.bitwise_and(image,image, mask = mask)
     
     gray = cv2.cvtColor(res, cv2.COLOR_BGR2GRAY)
+    filtered = gray
+    filtered = cv2.bilateralFilter(gray, 5, 20, 20)
+    gray = filtered
+    gray = cv2.GaussianBlur(gray, (5, 5), 0)
     thresh = cv2.threshold(gray, 30, 255, cv2.THRESH_BINARY)[1]
 
     r = 1000.0 / image.shape[1]
@@ -79,5 +83,5 @@ for i in range(2, int(sys.argv[2])):
     #k = cv2.waitKey(5) & 0xFF
     #if k == ord('q'):
     #   break
-    str = "_%003d_mask.tif" %i;
+    str = "_%003d_crop_and_mask.tif" %i;
     cv2.imwrite(sys.argv[1] + str, dst)
